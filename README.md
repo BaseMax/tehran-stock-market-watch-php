@@ -4,7 +4,8 @@ A PHP-based script to obtain live data of Tehran stock and watching market's sym
 
 ### Similar Repository
 
-https://github.com/BaseMax/tehran-stock-market-watch-nodejs
+- https://github.com/BaseMax/tehran-stock-market-watch-nodejs
+- https://github.com/BaseMax/tehran-stock-market-watch-go
 
 ---------
 
