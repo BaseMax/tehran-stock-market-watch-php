@@ -83,3 +83,24 @@ print("Connected to MySQL database\n");
 print("Start app\n");
 
 print("Get response from tsetmc website\n");
+
+require "netphp.php";
+// function get_it($url) {
+//     $ch = curl_init();
+//     $headers = [
+//         'Accept: application/json',
+//         'Content-Type: application/json',
+//     ];
+//     curl_setopt($ch, CURLOPT_URL, $url);
+//     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//     curl_setopt($ch, CURLOPT_HEADER, 0);
+//     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
+//     // $body = '{}';
+//     // curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+//     return curl_exec($ch);
+// }
+
+$data = get("http://www.tsetmc.com/tsev2/data/MarketWatchInit.aspx?h=0&r=0")[0];
+// $data = file_get_contents("MarketWatchInit.aspx");
