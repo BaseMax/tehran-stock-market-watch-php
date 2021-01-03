@@ -39,3 +39,38 @@ function getDbConnection() {
         throw new \PDOException($e->getMessage(), (int)$e->getCode());
     }
 }
+
+function parseItem($cols) {
+//   print_r($cols);
+  $info = [];
+  $namadID = $cols[0];
+  $info["code"] = $namadID;
+  $info["ins"] = $cols[1];
+
+  $info["symbol"] = $cols[2];
+  $info["name"] = $cols[3];
+  $info["time"] = $cols[3];
+
+  $info["count_all"] = $cols[8];
+  $info["volume_all"] = $cols[9];
+  $info["price_all"] = $cols[10];
+
+
+  $info["price_yesterday_last"] = $cols[7];
+  $info["price_today_first"] = $cols[5];
+  $info["price_now"] = $cols[13];
+
+  $info["price_min"] = $cols[11];
+  $info["price_max"] = $cols[12];
+  $info["price_close"] = $cols[6];
+
+  // $info["buy_count"] = $cols[17];
+  // $info["buy_price"] = $cols[17];
+  // $info["buy_volume"] = $cols[17];
+  // $info["sell_count"] = $cols[17];
+  // $info["sell_price"] = $cols[17];
+  // $info["sell_volume"] = $cols[17];
+
+  $info["eps"] = $cols[14];
+  return $info;
+}
