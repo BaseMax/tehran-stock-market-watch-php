@@ -74,3 +74,12 @@ function parseItem($cols) {
   $info["eps"] = $cols[14];
   return $info;
 }
+
+print("Connecting to database\n");
+
+getDbConnection();
+print("Connected to MySQL database\n");
+
+print("Start app\n");
+
+print("Get response from tsetmc website\n");
