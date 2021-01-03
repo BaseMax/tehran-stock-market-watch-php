@@ -113,6 +113,7 @@ if($content[2]) {
     $items = explode(";", $content[2]);
     // print_r($items);
     // print count($items)."\n";
+    $pdo->beginTransaction();
     for($i=0; $i < count($items); $i++) {
         // print $i."\n";
         $cols = explode(",", $items[$i]);
@@ -170,6 +171,7 @@ if($content[2]) {
         }
         $stmt->execute($data);
     }
+    $pdo->commit();
 }
 
 print("Close database connection\n");
