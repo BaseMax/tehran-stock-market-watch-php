@@ -104,3 +104,74 @@ require "netphp.php";
 
 $data = get("http://www.tsetmc.com/tsev2/data/MarketWatchInit.aspx?h=0&r=0")[0];
 // $data = file_get_contents("MarketWatchInit.aspx");
+
+print("Response: " . strlen($data) . "\n");
+file_put_contents("res.txt", $data);
+// var_dump($data);
+$content = explode("@", $data);
+if($content[2]) {
+    $items = explode(";", $content[2]);
+    // print_r($items);
+    // print count($items)."\n";
+    for($i=0; $i < count($items); $i++) {
+        // print $i."\n";
+        $cols = explode(",", $items[$i]);
+        // print_r($cols);
+        $item = parseItem($cols);
+        if($item == null) {
+            return;
+        }
+
+        $sql = "SELECT COUNT(id) as count from `symbol` WHERE code=?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$item["code"]]);
+        $count = $stmt->fetchColumn();
+        if($count == 0) {
+            $data = [
+                $item["symbol"],
+                $item["name"],
+                $item["code"],
+                $item["ins"]
+            ];
+            $sql = "INSERT INTO `symbol` SET symbol=?, name=?, code=?, ins=?";
+            $stmt= $pdo->prepare($sql);
+            foreach($data as $x=>$value) {
+                $stmt->bindParam($x+1, $value);
+            }
+            $stmt->execute($data);
+        }
+
+        $sql = "SELECT * FROM `symbol` WHERE `code`=? LIMIT 1";
+        $stmt= $pdo->prepare($sql);
+        $stmt->execute([$item["code"]]);
+        $stmt->execute(); 
+        $symbolID = $stmt->fetch()["id"];
+        print $symbolID."\n";
+
+        $data = [
+            $symbolID,
+            date('r', time()),
+            // time(),
+            $item["count_all"],
+            $item["volume_all"],
+            $item["price_all"],
+            $item["price_yesterday_last"],
+            $item["price_today_first"],
+            $item["price_now"],
+            $item["price_max"] != "" ? $item["price_max"] : null,
+            $item["price_min"] != "" ? $item["price_min"] : null,
+            $item["price_close"] != "" ? $item["price_close"] : null,
+            $item["eps"] != "" ? $item["eps"] : null
+        ];
+        $sql = "INSERT INTO `history` SET symbol_id=?, time=?, count_all=?, volume_all=?, price_all=?, price_yesterday_last=?, price_today_first=?, price_now=?, price_max=?, price_min=?, price_close=?, eps=?";
+        $stmt= $pdo->prepare($sql);
+        foreach($data as $x=>$value) {
+            $stmt->bindParam($x+1, $value);
+        }
+        $stmt->execute($data);
+    }
+}
+
+print("Close database connection\n");
+
+print("End app\n");
